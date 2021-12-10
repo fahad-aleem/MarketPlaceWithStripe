@@ -1,7 +1,7 @@
 import { Typography, FlexContainer } from "./StyledComponent";
 import styled from "@emotion/styled";
 import { useState } from "react";
-import SellerForm from "./SellerForm";
+import { CustomerForm, SellerForm } from "./SellerForm";
 
 const LinkButton = styled.button`
   font-size: 1.2rem;
@@ -28,26 +28,31 @@ const LoginForm = () => {
       <Typography variant="h3" align="center" margin="1rem 0">
         Create your account to get started!
       </Typography>
-      <FlexContainer justify="center">
-        <LinkButton
-          background="light"
-          onClick={() => {
-            setIsSeller(false);
-          }}
-          selected={!isSeller}
-        >
-          Customer
-        </LinkButton>
-        <LinkButton
-          selected={isSeller}
-          onClick={() => {
-            setIsSeller(true);
-          }}
-        >
-          Seller
-        </LinkButton>
+      <FlexContainer justify="center" direction="column">
+        <FlexContainer>
+          <LinkButton
+            background="light"
+            onClick={() => {
+              setIsSeller(false);
+            }}
+            selected={!isSeller}
+          >
+            Customer
+          </LinkButton>
+          <LinkButton
+            selected={isSeller}
+            onClick={() => {
+              setIsSeller(true);
+            }}
+          >
+            Seller
+          </LinkButton>
+        </FlexContainer>
+        <Typography variant="h3" align="center" margin="1rem 0 0 0">
+          {isSeller ? "Signup as Seller" : "Signup as Customer"}
+        </Typography>
       </FlexContainer>
-      <SellerForm />
+      {isSeller ? <SellerForm /> : <CustomerForm />}
     </div>
   );
 };
