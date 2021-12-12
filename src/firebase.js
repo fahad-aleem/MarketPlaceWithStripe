@@ -1,5 +1,11 @@
 import { initializeApp } from "firebase/app";
 import { getFirestore } from "firebase/firestore";
+import {
+  getAuth,
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+} from "firebase/auth";
+
 const firebaseApp = initializeApp({
   apiKey: "AIzaSyCXZU9sFSXxBnPnTUU1s51nJrA87ljUQ8k",
   authDomain: "shopeact-web.firebaseapp.com",
@@ -13,3 +19,4 @@ const firebaseApp = initializeApp({
 const db = getFirestore(firebaseApp);
 
 export default db;
+export { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword };

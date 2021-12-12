@@ -1,10 +1,21 @@
 import styled from "@emotion/styled/";
-import { FormControl, FormLabel, Input, Button } from "./StyledComponent";
+import {
+  FormControl,
+  FormLabel,
+  Input,
+  Button,
+  Typography,
+} from "./StyledComponent";
 import { useFormik } from "formik";
 import { useState } from "react";
 import { collection, addDoc } from "firebase/firestore";
 import db from "../firebase";
 import axios from "axios";
+import { Link } from "react-router-dom";
+import createNewUser from "../functions/CreateNewUser";
+import SigninUser from "../functions/SigninUser";
+import getUserByEmail from "../functions/GetUserByEmail";
+import { useSelector } from "../store/authStore";
 
 const Form = styled.form`
   max-width: 680px;
@@ -87,6 +98,9 @@ const CustomerForm = () => {
           onChange={formik.handleChange}
         />
       </FormControl>
+      <Typography margin="1rem 0">
+        Already have an account? <Link to="/login">login here</Link>
+      </Typography>
       <Button type="submit" radius="5px" width="150px" bg="#f72c25">
         Submit
       </Button>
@@ -152,40 +166,44 @@ const SellerForm = () => {
     onSubmit: async (values) => {
       setLoading(true);
       try {
-        axios({
-          method: "post",
-          url: "http://localhost:3000/create-account",
-          data: {
-            email: values.email,
-          },
-        }).then(async (resp) => {
-          // save the account details to the firebase
-          const docRef = await addDoc(collection(db, "users"), {
-            username: values.username,
-            email: values.email,
-            password: values.password,
-            contactNo: values.contactNo,
-            role: "seller",
-            businessOwnerName: values.businessOwnerName,
-            shopName: values.shopName,
-            isProfileCompleted: false,
-            stripeAccountId: resp.data.id,
-          });
-          // empty the values
-          formik.setValues({
-            username: "",
-            email: "",
-            password: "",
-            confirmPassword: "",
-            contactNo: "",
-            businessOwnerName: "",
-            shopName: "",
-          });
-
-          // get the stripe account link
-          handleGetStripeAccountLink(resp.data.id);
-          // create account link
-          setLoading(false);
+        createNewUser(values.email, values.password).then((res) => {
+          if (res.status === "success") {
+            axios({
+              method: "post",
+              url: "http://localhost:3000/create-account",
+              data: {
+                email: values.email,
+              },
+            }).then(async (resp) => {
+              // save the account details to the firebase
+              await addDoc(collection(db, "users"), {
+                username: values.username,
+                email: values.email,
+                contactNo: values.contactNo,
+                role: "seller",
+                businessOwnerName: values.businessOwnerName,
+                shopName: values.shopName,
+                isProfileCompleted: false,
+                stripeAccountId: resp.data.id,
+              });
+              // empty the values
+              formik.setValues({
+                username: "",
+                email: "",
+                password: "",
+                confirmPassword: "",
+                contactNo: "",
+                businessOwnerName: "",
+                shopName: "",
+              });
+              // get the stripe account link
+              handleGetStripeAccountLink(resp.data.id);
+              // create account link
+              setLoading(false);
+            });
+          } else if (res.status === "error") {
+            alert(res.message);
+          }
         });
       } catch (e) {
         console.error("Error adding document: ", e);
@@ -289,6 +307,9 @@ const SellerForm = () => {
           <Error>{formik.errors.contactNo}</Error>
         ) : null}
       </FormControl>
+      <Typography margin="1rem 0">
+        Already have an account? <Link to="/login">login here</Link>
+      </Typography>
       <Button
         type="submit"
         radius="5px"
@@ -302,4 +323,73 @@ const SellerForm = () => {
   );
 };
 
-export { CustomerForm, SellerForm };
+const LoginForm = () => {
+  const [loading, setLoading] = useState(false);
+  const handleLogin = useSelector((state) => state.setAuth);
+
+  const formik = useFormik({
+    initialValues: {
+      email: "",
+      password: "",
+    },
+    onSubmit: async (values) => {
+      setLoading(true);
+      SigninUser(values.email, values.password).then((res) => {
+        setLoading(false);
+        if (res.status === "success") {
+          alert("Login Successful");
+          getUserByEmail(values.email).then((res) => {
+            handleLogin(res);
+          });
+        } else if (res.status === "error") {
+          setLoading(false);
+          alert(res.message);
+        }
+      });
+    },
+  });
+  return (
+    <Form
+      onSubmit={(e) => {
+        e.preventDefault();
+        formik.handleSubmit();
+      }}
+    >
+      <FormControl margin="1rem 0">
+        <FormLabel>Email:</FormLabel>
+        <Input
+          type="email"
+          id="email"
+          value={formik.values.email}
+          placeholder="John@gmail.com"
+          onChange={formik.handleChange}
+        />
+      </FormControl>
+      <FormControl margin="1rem 0">
+        <FormLabel>Password:</FormLabel>
+        <Input
+          type="password"
+          id="password"
+          value={formik.values.password}
+          placeholder="Type your password"
+          onChange={formik.handleChange}
+        />
+      </FormControl>
+      <Typography margin="1rem 0">
+        If you don't have an account?{" "}
+        <Link to="/signup">Create an account!</Link>
+      </Typography>
+      <Button
+        type="submit"
+        radius="5px"
+        disabled={loading}
+        width="200px"
+        bg="#f72c25"
+      >
+        {loading ? "Please wait..." : "Login"}
+      </Button>
+    </Form>
+  );
+};
+
+export { CustomerForm, SellerForm, LoginForm };

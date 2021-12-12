@@ -1,6 +1,7 @@
 import styled from "@emotion/styled";
 import { Typography } from "./StyledComponent";
 import { Link } from "react-router-dom";
+import { useSelector } from "../store/authStore";
 
 const Navbar = styled.nav`
   padding: 1rem;
@@ -33,6 +34,8 @@ const NavItem = styled.li`
 `;
 
 const AppBar = () => {
+  const auth = useSelector((state) => state.auth);
+  const handleLogout = useSelector((state) => state.setLogout);
   return (
     <Navbar>
       <Typography variant="h5" color="light">
@@ -52,7 +55,13 @@ const AppBar = () => {
           <Link to="/">Support</Link>
         </NavItem>
         <NavItem>
-          <Link to="/login">Login</Link>
+          {auth.isAuthenticated ? (
+            <Link to="/login" onClick={handleLogout}>
+              Logout
+            </Link>
+          ) : (
+            <Link to="/login">Login</Link>
+          )}
         </NavItem>
       </Nav>
     </Navbar>

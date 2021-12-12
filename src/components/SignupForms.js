@@ -1,7 +1,7 @@
 import { Typography, FlexContainer } from "./StyledComponent";
 import styled from "@emotion/styled";
 import { useState } from "react";
-import { CustomerForm, SellerForm } from "./SellerForm";
+import { CustomerForm, SellerForm } from "./Forms";
 
 const LinkButton = styled.button`
   font-size: 1.2rem;
