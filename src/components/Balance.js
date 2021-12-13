@@ -1,5 +1,5 @@
 import styled from "@emotion/styled";
-import { Typography, FlexContainer, Button } from "./StyledComponent";
+import { Typography, FlexContainer } from "./StyledComponent";
 import userAvatar from "../assets/user.png";
 import { useSelector } from "../store/authStore";
 import { useEffect, useState } from "react";

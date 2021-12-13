@@ -6,6 +6,7 @@ import Login from "./views/Login";
 import { useSelector } from "./store/authStore";
 import Dashboard from "./views/Dashboard";
 import Success from "./views/AccountSuccess";
+import AddProduct from "./views/AddNewProduct";
 
 const Router = () => {
   const auth = useSelector((state) => state.auth);
@@ -21,6 +22,9 @@ const Router = () => {
         )}
         {auth.isAuthenticated && (
           <Route path="/success" element={<Success />} />
+        )}
+        {auth.isAuthenticated && (
+          <Route path="/add-products" element={<AddProduct />} />
         )}
       </Routes>
     </div>
