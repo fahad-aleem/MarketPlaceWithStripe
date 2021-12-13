@@ -31,15 +31,9 @@ const AccountSuccess = () => {
           ...auth.user,
           isProfileCompleted: true,
         });
-
-        // update store
-        handleSetAuth({
-          ...auth.user,
-          isProfileCompleted: true,
-        });
       }
     });
-  }, []);
+  });
   return (
     <Container>
       <FlexContainer direction="column">
@@ -48,7 +42,18 @@ const AccountSuccess = () => {
           now get payout to your bank account.
         </Typography>
         <Link to="/dashboard">
-          <Button radius="5px" width="200px" margin="1rem">
+          <Button
+            radius="5px"
+            width="200px"
+            margin="1rem"
+            onClick={() => {
+              // update store
+              handleSetAuth({
+                ...auth.user,
+                isProfileCompleted: true,
+              });
+            }}
+          >
             Go to dashboard
           </Button>
         </Link>

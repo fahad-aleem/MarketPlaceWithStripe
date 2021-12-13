@@ -8,7 +8,7 @@ import {
 } from "./StyledComponent";
 import { useFormik } from "formik";
 import { useState } from "react";
-import { collection, addDoc, setDoc, doc } from "firebase/firestore";
+import { setDoc, doc } from "firebase/firestore";
 import db from "../firebase";
 import axios from "axios";
 import { Link } from "react-router-dom";
@@ -16,7 +16,6 @@ import createNewUser from "../functions/CreateNewUser";
 import SigninUser from "../functions/SigninUser";
 import { useSelector } from "../store/authStore";
 import handleGetStripeAccountLink from "../functions/GenerateStripAccountLink";
-import handleGenerateId from "../functions/GenerateRandomId";
 
 const Form = styled.form`
   max-width: 680px;

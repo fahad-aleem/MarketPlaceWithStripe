@@ -1,10 +1,10 @@
 import styled from "@emotion/styled";
-import { Typography, FlexContainer } from "./StyledComponent";
+import { Typography, FlexContainer, Button } from "./StyledComponent";
 import userAvatar from "../assets/user.png";
 import { useSelector } from "../store/authStore";
-import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import GenerateDashboardLink from "../functions/GenerateDashboardLink";
 
 const Container = styled.div`
   max-width: 1200px;
@@ -26,14 +26,25 @@ const ActiveIcon = styled.i`
   color: #00b894;
 `;
 
+const PayoutBtn = styled.button`
+  background-color: transparent;
+  border: none;
+  color: #f72c25;
+  font-size: 16px;
+  cursor: pointer;
+`;
+
 const Balance = () => {
   const auth = useSelector((state) => state.auth);
-  const { username, stripeAccountId } = auth.user;
+  const { username, stripeAccountId, isProfileCompleted } = auth.user;
 
   const [balance, setBalance] = useState({
     available: 0,
     pending: 0,
+    total: 0,
   });
+  const [dashboardUrl, setDashboardUrl] = useState("");
+  const [currency, setCurrency] = useState("");
 
   useEffect(() => {
     // get available balance
@@ -45,9 +56,14 @@ const Balance = () => {
         setBalance({
           available: available[0].amount,
           pending: pending[0].amount,
+          total: ((available[0].amount + pending[0].amount) / 100).toFixed(2),
+        });
+        setCurrency(available[0].currency);
+        GenerateDashboardLink(stripeAccountId).then((url) => {
+          setDashboardUrl(url);
         });
       });
-  }, []);
+  });
 
   return (
     <Container>
@@ -59,27 +75,33 @@ const Balance = () => {
           <Avatar src={userAvatar} alt="user avatar" />
           <div>
             <Typography variant="h4">
-              {username} <ActiveIcon className="fas fa-check"></ActiveIcon>
+              {username}{" "}
+              {isProfileCompleted && (
+                <ActiveIcon className="fas fa-check"></ActiveIcon>
+              )}
             </Typography>
             <Typography variant="p">{stripeAccountId}</Typography>
-            <Link to="/">
+            <a href={dashboardUrl}>
               <Typography variant="p">View stripe account</Typography>
-            </Link>
+            </a>
           </div>
         </FlexContainer>
-        <FlexContainer direction="column">
+        <FlexContainer direction="column" align="baseline">
           <FlexContainer>
-            <Typography>Your Available Balance: </Typography>
+            <Typography>Available Balance: </Typography>
             <Typography margin="0 1rem">
-              ${balance.available.toFixed(2)}
+              {currency.toLocaleUpperCase()}&nbsp;
+              {(balance.available / 100).toFixed(2)}
             </Typography>
           </FlexContainer>
           <FlexContainer>
-            <Typography>Your Pending Balance: </Typography>
+            <Typography>Pending Balance: </Typography>
             <Typography margin="0 1rem">
-              ${balance.pending.toFixed(2)}
+              {currency.toLocaleUpperCase()}&nbsp;
+              {(balance.pending / 100).toFixed(2)}
             </Typography>
           </FlexContainer>
+          <PayoutBtn>Payout my available balance</PayoutBtn>
         </FlexContainer>
       </FlexContainer>
     </Container>
