@@ -1,7 +1,7 @@
 import { collection, query, where, getDocs } from "firebase/firestore";
 import db from "../firebase";
 
-const getUserByEmail = async (email) => {
+async function getUserByEmail(email) {
   const q = query(collection(db, "users"), where("email", "==", email));
   const user = await getDocs(q);
   let userObject = {};
@@ -10,6 +10,6 @@ const getUserByEmail = async (email) => {
   });
 
   return userObject;
-};
+}
 
 export default getUserByEmail;

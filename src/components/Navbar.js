@@ -42,18 +42,26 @@ const AppBar = () => {
         Mobiles Arena
       </Typography>
       <Nav>
-        <NavItem>
-          <Link to="/">Home</Link>
-        </NavItem>
-        <NavItem>
-          <Link to="/">Products</Link>
-        </NavItem>
-        <NavItem>
-          <Link to="/">About us</Link>
-        </NavItem>
-        <NavItem>
-          <Link to="/">Support</Link>
-        </NavItem>
+        {!auth.isAuthenticated ? (
+          <>
+            <NavItem>
+              <Link to="/">Home</Link>
+            </NavItem>
+            <NavItem>
+              <Link to="/">Products</Link>
+            </NavItem>
+            <NavItem>
+              <Link to="/">About us</Link>
+            </NavItem>
+            <NavItem>
+              <Link to="/">Support</Link>
+            </NavItem>
+          </>
+        ) : (
+          <NavItem>
+            <Link to="/dashboard">Dashboard</Link>
+          </NavItem>
+        )}
         <NavItem>
           {auth.isAuthenticated ? (
             <Link to="/login" onClick={handleLogout}>

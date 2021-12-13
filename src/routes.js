@@ -4,6 +4,7 @@ import Signup from "./views/Signup";
 import AppBar from "./components/Navbar";
 import Login from "./views/Login";
 import { useSelector } from "./store/authStore";
+import Dashboard from "./views/Dashboard";
 
 const Router = () => {
   const auth = useSelector((state) => state.auth);
@@ -13,7 +14,10 @@ const Router = () => {
       <Routes>
         <Route path="/" element={<Home />} />
         {!auth.isAuthenticated && <Route path="/login" element={<Login />} />}
-        <Route path="/signup" element={<Signup />} />
+        {!auth.isAuthenticated && <Route path="/signup" element={<Signup />} />}
+        {auth.isAuthenticated && (
+          <Route path="/dashboard" element={<Dashboard />} />
+        )}
       </Routes>
     </div>
   );

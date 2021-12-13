@@ -1,12 +1,14 @@
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
+import getUserByEmail from "./GetUserByEmail";
 
 const SigninUser = async (email, password) => {
   try {
     const auth = getAuth();
-    const user = await signInWithEmailAndPassword(auth, email, password);
+    await signInWithEmailAndPassword(auth, email, password);
+    const userData = await getUserByEmail(email);
     return {
       status: "success",
-      user,
+      userData,
     };
   } catch (error) {
     return {
