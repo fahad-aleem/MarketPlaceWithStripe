@@ -5,6 +5,7 @@ import AppBar from "./components/Navbar";
 import Login from "./views/Login";
 import { useSelector } from "./store/authStore";
 import Dashboard from "./views/Dashboard";
+import Success from "./views/AccountSuccess";
 
 const Router = () => {
   const auth = useSelector((state) => state.auth);
@@ -17,6 +18,9 @@ const Router = () => {
         {!auth.isAuthenticated && <Route path="/signup" element={<Signup />} />}
         {auth.isAuthenticated && (
           <Route path="/dashboard" element={<Dashboard />} />
+        )}
+        {auth.isAuthenticated && (
+          <Route path="/success" element={<Success />} />
         )}
       </Routes>
     </div>

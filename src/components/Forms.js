@@ -8,7 +8,7 @@ import {
 } from "./StyledComponent";
 import { useFormik } from "formik";
 import { useState } from "react";
-import { collection, addDoc } from "firebase/firestore";
+import { collection, addDoc, setDoc, doc } from "firebase/firestore";
 import db from "../firebase";
 import axios from "axios";
 import { Link } from "react-router-dom";
@@ -16,6 +16,7 @@ import createNewUser from "../functions/CreateNewUser";
 import SigninUser from "../functions/SigninUser";
 import { useSelector } from "../store/authStore";
 import handleGetStripeAccountLink from "../functions/GenerateStripAccountLink";
+import handleGenerateId from "../functions/GenerateRandomId";
 
 const Form = styled.form`
   max-width: 680px;
@@ -162,7 +163,8 @@ const SellerForm = () => {
             })
               .then(async (resp) => {
                 // save the account details to the firebase
-                await addDoc(collection(db, "users"), {
+                await setDoc(doc(db, "users", resp.data.id), {
+                  id: resp.data.id,
                   username: values.username,
                   email: values.email,
                   contactNo: values.contactNo,
@@ -192,7 +194,7 @@ const SellerForm = () => {
                 // login the user with signup data
                 const user = await SigninUser(values.email, values.password);
                 // store the user to the store
-                handeLogin(user);
+                handeLogin(user.userData);
                 setLoading(false);
                 // redirect the user to the link
                 window.location.href = accountLink.url;
