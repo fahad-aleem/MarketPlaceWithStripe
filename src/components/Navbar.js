@@ -58,9 +58,14 @@ const AppBar = () => {
             </NavItem>
           </>
         ) : (
-          <NavItem>
-            <Link to="/dashboard">Dashboard</Link>
-          </NavItem>
+          <>
+            <NavItem>
+              <Link to="/add-products">Add Products</Link>
+            </NavItem>
+            <NavItem>
+              <Link to="/dashboard">Dashboard</Link>
+            </NavItem>
+          </>
         )}
         <NavItem>
           {auth.isAuthenticated ? (
