@@ -8,6 +8,8 @@ import { Link } from "react-router-dom";
 import { useEffect } from "react";
 import GetStripeAccountDetails from "../functions/GetStripeAccountDetails";
 import { useSelector } from "../store/authStore";
+import UpdateUserInfo from "../functions/UpdateUserInfo";
+import { useNavigate } from "react-router-dom";
 const Container = styled.div`
   max-width: 650px;
   margin: 1rem auto;
@@ -15,10 +17,27 @@ const Container = styled.div`
 `;
 const AccountSuccess = () => {
   const auth = useSelector((state) => state.auth);
+  const handleSetAuth = useSelector((state) => state.setAuth);
+  const Navigate = useNavigate();
   useEffect(() => {
-    console.log(auth);
+    if (auth.user.isProfileCompleted) {
+      Navigate("/dashboard");
+    }
+
     GetStripeAccountDetails(auth.user.stripeAccountId).then((res) => {
-      console.log(res);
+      if (res.details_submitted) {
+        // update the user info
+        UpdateUserInfo(auth.user.id, {
+          ...auth.user,
+          isProfileCompleted: true,
+        });
+
+        // update store
+        handleSetAuth({
+          ...auth.user,
+          isProfileCompleted: true,
+        });
+      }
     });
   }, []);
   return (

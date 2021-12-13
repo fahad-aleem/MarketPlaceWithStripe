@@ -3,10 +3,13 @@ import db from "../firebase";
 
 async function UpdateUserInfo(userId, userInfo) {
   try {
-    await db.collection("users").doc(userId).update(userInfo);
+    const docRef = doc(db, "users", userId);
+    await updateDoc(docRef, userInfo);
     return true;
   } catch (error) {
-    console.log(error);
+    alert(error);
     return false;
   }
 }
+
+export default UpdateUserInfo;
