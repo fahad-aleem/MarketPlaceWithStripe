@@ -63,7 +63,7 @@ const Balance = () => {
           setDashboardUrl(url);
         });
       });
-  });
+  }, [stripeAccountId]);
 
   return (
     <Container>

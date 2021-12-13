@@ -218,7 +218,6 @@ const SellerForm = () => {
         e.preventDefault();
         formik.handleSubmit();
       }}
-      noValidate
     >
       <FormControl margin="1rem 0">
         <FormLabel>Username:</FormLabel>
