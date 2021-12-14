@@ -20,6 +20,7 @@
     "react-scripts": "^4.0.3",
     "stripe": "^8.191.0",
     "web-vitals": "^1.0.1",
+    "yup": "^0.32.11",
     "zustand": "^3.6.7"
   },
   "scripts": {

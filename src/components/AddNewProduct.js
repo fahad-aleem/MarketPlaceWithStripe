@@ -6,6 +6,7 @@ import {
   Input,
   Button,
 } from "./StyledComponent";
+import * as yup from "yup";
 
 const Container = styled.div`
   max-width: 700px;

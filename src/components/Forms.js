@@ -16,6 +16,7 @@ import createNewUser from "../functions/CreateNewUser";
 import SigninUser from "../functions/SigninUser";
 import { useSelector } from "../store/authStore";
 import handleGetStripeAccountLink from "../functions/GenerateStripAccountLink";
+import * as yup from "yup";
 
 const Form = styled.form`
   max-width: 680px;
@@ -328,11 +329,23 @@ const LoginForm = () => {
   const [loading, setLoading] = useState(false);
   const handleLogin = useSelector((state) => state.setAuth);
 
+  // validation schema
+  const validationSchema = yup.object({
+    email: yup
+      .string("Enter your email")
+      .email("Enter a valid email")
+      .required("Email is required!"),
+    password: yup
+      .string("Enter your password")
+      .required("Password is required!"),
+  });
+
   const formik = useFormik({
     initialValues: {
       email: "",
       password: "",
     },
+    validationSchema,
     onSubmit: async (values) => {
       setLoading(true);
       const user = await SigninUser(values.email, values.password);
@@ -347,21 +360,19 @@ const LoginForm = () => {
     },
   });
   return (
-    <Form
-      onSubmit={(e) => {
-        e.preventDefault();
-        formik.handleSubmit();
-      }}
-    >
+    <Form onSubmit={formik.handleSubmit}>
       <FormControl margin="1rem 0">
         <FormLabel>Email:</FormLabel>
         <Input
-          type="email"
+          type="text"
           id="email"
           value={formik.values.email}
           placeholder="John@gmail.com"
           onChange={formik.handleChange}
         />
+        {formik.touched.email && formik.errors.email && (
+          <Error>{formik.errors.email}</Error>
+        )}
       </FormControl>
       <FormControl margin="1rem 0">
         <FormLabel>Password:</FormLabel>
@@ -372,6 +383,9 @@ const LoginForm = () => {
           placeholder="Type your password"
           onChange={formik.handleChange}
         />
+        {formik.touched.password && formik.errors.password && (
+          <Error>{formik.errors.password}</Error>
+        )}
       </FormControl>
       <Typography margin="1rem 0">
         If you don't have an account?{" "}
