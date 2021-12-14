@@ -1,70 +1,85 @@
-# Getting Started with Create React App
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# Mobiles Arena Marketplace Web App
 
-## Available Scripts
+It is web application that provides the third party vendors to sell their mobile phones and accessories at one place. Generate revenues, and takes payments to their bank accounts directly.
 
-In the project directory, you can run:
+This is a complete marketplace website which connects the customers i.e mobile buyers and sellers together, provides online payment solutions so that the sellers can sell their products easily.
 
-### `yarn start`
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
 
-### `yarn test`
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## Features
 
-### `yarn build`
+- Seller / Customer Profiles
+- Add Products
+- Online purchasing through credit card payments.
+- Seller can access their dashboard to take all the necessary information about their earnings.
+- Product filters
+- Cart
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
 
-### `yarn eject`
+## Tech Stack
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+**Client:** React, Zustand, Styled Components.
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+**Server:** Node, Express.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+## Documentation
 
-## Learn More
+The frontend of this application is developed by using React JS.
+[React JS Guide ](https://reactjs.org/)
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+To store the products, sellers and customer information firebase firestore is used for this purpose.
+[Firebase Firestore Documentation](https://firebase.google.com/docs/firestore)
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+For secure payments methods, payouts and bank transfers I used Stripe connect express for handling all these features.
+[Stripe Connect Express](https://stripe.com/docs/connect/express-accounts)
 
-### Code Splitting
+To store the product images and other files, firebase storage is used.
+[Firebase store](https://firebase.google.com/docs/storage)
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
 
-### Analyzing the Bundle Size
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+The backend is developed by using node and express server.
+[Backend Server](https://github.com/fahad-aleem/Node-Stripe)
 
-### Making a Progressive Web App
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+## Installation
 
-### Advanced Configuration
+Clone frontend repository.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+```bash
+  git clone https://github.com/fahad-aleem/MarketPlaceWithStripe.git 
+  cd MarketPlaceWithStripe
+```
+Install dependencies
+```bash
+  npm install
+```
+Clone server
+```bash
+  git clone https://github.com/fahad-aleem/Node-Stripe.git 
+  cd Node-Stripe
+```
+Install dependencies
+```bash
+  npm install
+```
 
-### Deployment
+Start server
+```bash
+  npm start
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+First, start the backend server and then start frontend. Otherwise there will be some url issues.
 
-### `yarn build` fails to minify
+Start Frontend
+```bash
+  npm start
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+    
